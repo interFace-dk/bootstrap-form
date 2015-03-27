@@ -199,6 +199,35 @@ class BootstrapForm
     }
 
     /**
+     * Create a Bootstrap select field.
+     * @param $name
+     * @param $optionsList
+     * @param null $label
+     * @param null $value
+     * @param array $options
+     * @return string
+     */
+    public function select($name, $optionsList, $label = null, $value = null, $options = array())
+    {
+
+        $label = $this->getLabelTitle($label, $name);
+
+        $options = $this->getFieldOptions($options);
+        $wrapperOptions = ['class' => $this->getRightColumnClass()];
+
+        $inputElement = $this->form->select($name,$optionsList,$value,$options);
+
+        $input = $inputElement;
+        if (isset($options['required'])){
+            $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
+        }
+
+        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
+
+        return $this->getFormGroup($name, $label, $groupElement);
+    }
+
+    /**
      * Create a Bootstrap email field input.
      *
      * @param  string  $name
@@ -404,7 +433,7 @@ class BootstrapForm
 
         $options = $this->getFieldOptions($options);
         $wrapperOptions = ['class' => $this->getRightColumnClass()];
-
+        
         $inputElement = $type == 'password' ? $this->form->password($name, $options) : $this->form->{$type}($name, $value, $options);
 
         $input = $inputElement;
@@ -416,6 +445,43 @@ class BootstrapForm
 
         return $this->getFormGroup($name, $label, $groupElement);
     }
+
+//    /**
+//     * Create the select group for an element with the correct classes for errors.
+//     * @param $name
+//     * @param $label
+//     * @param $selectOptions array(array(key=>'',value=>''))
+//     * @param null $defaultValue
+//     * @param array $options
+//     * @return string
+//     */
+//    public function select($name,$label,$selectOptions,$defaultValue=null,$options = array())
+//    {
+//        $label = $this->getLabelTitle($label, $name);
+//
+//        $options = $this->getFieldOptions($options);
+//        $wrapperOptions = ['class' => $this->getRightColumnClass()];
+//        
+//        $htmlOptions = '';
+//        foreach ($selectOptions as $row){
+//            $selected = '';
+//            if ($row['key']===$defaultValue){
+//                $selected = 'selected';
+//            }
+//            $htmlOptions .= '<option value="'.$row['key'].'" '.$selected.'>'.$row['value'].'</option>';
+//        }
+//
+//        $inputElement = '<select name="'.$name.'">'.$htmlOptions.'</select>';
+//        
+//        $input = $inputElement;
+//        if (isset($options['required'])){
+//            $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
+//        }
+//
+//        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
+//
+//        return $this->getFormGroup($name, $label, $groupElement);
+//    }
 
     /**
      * Get the label title for a form field, first by using the provided one
