@@ -1,5 +1,5 @@
 {
-    "name": "watson/bootstrap-form",
+    "name": "smskin/bootstrap-form",
     "description": "Laravel 5 form wrappers for Bootstrap 3.",
     "keywords": ["laravel", "form", "bootstrap"],
     "license": "MIT",
