@@ -7,6 +7,10 @@ use Collective\Html\FormBuilder;
 use Illuminate\Session\SessionManager as Session;
 use Illuminate\Support\Str;
 
+/**
+ * Class BootstrapForm
+ * @package Watson\BootstrapForm
+ */
 class BootstrapForm
 {
     /**
@@ -66,7 +70,7 @@ class BootstrapForm
         $options['role'] = 'form';
 
         // If the class hasn't been set, set the default style.
-        if ( ! isset($options['class'])) {
+        if ( !array_key_exists('class',$options)) {
             $defaultForm = $this->getDefaultForm();
 
             if ($defaultForm === 'horizontal') {
@@ -76,14 +80,19 @@ class BootstrapForm
             }
         }
 
-        if (isset($options['model'])) {
+        if (array_key_exists('model',$options)) {
             return $this->model($options);
         }
 
         return $this->form->open($options);
     }
 
-    public function portletOpen($portletOptions,$formOptions = array())
+    /**
+     * @param $portletOptions
+     * @param array $formOptions
+     * @return string
+     */
+    public function portletOpen($portletOptions,array $formOptions = array())
     {
         $form = $this->open($formOptions);
         return '<div class="portlet box blue">
@@ -95,6 +104,9 @@ class BootstrapForm
                 <div class="portlet-body form">'.$form;
     }
 
+    /**
+     * @return string
+     */
     public function portletClose()
     {
         return $this->form->close().'</div></div>';
@@ -183,7 +195,7 @@ class BootstrapForm
      * @param array $options
      * @return string
      */
-    public function staticField($name, $label = null, $value = null, $options = array())
+    public function staticField($name, $label = null, $value = null, array $options = array())
     {
         $options = array_merge(['class' => 'form-control-static'], $options);
 
@@ -191,7 +203,7 @@ class BootstrapForm
         $inputElement = '<p'.$this->html->attributes($options).'>'.e($value).'</p>';
 
         $input = $inputElement;
-        if (isset($options['required'])){
+        if (array_key_exists('required',$options)){
             $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
         }
 
@@ -210,7 +222,7 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function text($name, $label = null, $value = null, $options = array())
+    public function text($name, $label = null, $value = null, array $options = array())
     {
         return $this->input('text', $name, $label, $value, $options);
     }
@@ -224,7 +236,7 @@ class BootstrapForm
      * @param array $options
      * @return string
      */
-    public function select($name, $optionsList, $label = null, $value = null, $options = array())
+    public function select($name, array $optionsList = array(), $label = null, $value = null, array $options = array())
     {
 
         $label = $this->getLabelTitle($label, $name);
@@ -240,7 +252,7 @@ class BootstrapForm
         $inputElement = $this->form->select($name,$optionsArray,$value,$options);
 
         $input = $inputElement;
-        if (isset($options['required'])){
+        if (array_key_exists('required',$options)){
             $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
         }
 
@@ -258,19 +270,19 @@ class BootstrapForm
      * @param array $options
      * @return string
      */
-    public function select2me($name, $optionsList, $label = null, $value = null, $options = array())
+    public function select2me($name, $optionsList, $label = null, $value = null, array $options = array())
     {
 
         $label = $this->getLabelTitle($label, $name);
 
-        if (!isset($options['class'])){
+        if (!array_key_exists('class',$options)){
             $options['class']='select2me';
         }
         $options = $this->getFieldOptions($options);
         $wrapperOptions = ['class' => $this->getRightColumnClass()];
 
         $optionsArray = array();
-        if (isset($options['data-placeholder'])){
+        if (array_key_exists('data-placeholder',$options)){
             $optionsArray['']='';
         }
         foreach ($optionsList as $row){
@@ -281,7 +293,7 @@ class BootstrapForm
         $inputElement = $this->form->select($name,$optionsArray,$value,$options);
 
         $input = $inputElement;
-        if (isset($options['required'])){
+        if (array_key_exists('required',$options)){
             $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
         }
 
@@ -299,7 +311,7 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function email($name = 'email', $label = null, $value = null, $options = array())
+    public function email($name = 'email', $label = null, $value = null, array $options = array())
     {
         return $this->input('email', $name, $label, $value, $options);
     }
@@ -313,7 +325,7 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function textarea($name, $label = null, $value = null, $options = array())
+    public function textarea($name, $label = null, $value = null, array $options = array())
     {
         return $this->input('textarea', $name, $label, $value, $options);
     }
@@ -326,7 +338,7 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function password($name = 'password', $label = null, $options = array())
+    public function password($name = 'password', $label = null, array $options = array())
     {
         return $this->input('password', $name, $label, null, $options);
     }
@@ -342,7 +354,7 @@ class BootstrapForm
      * @param  array    $options
      * @return string
      */
-    public function checkbox($name, $label, $value, $checked = null, $inline = false, $options = array())
+    public function checkbox($name, $label, $value, $checked = null, $inline = false, array $options = array())
     {
         $labelOptions = $inline ? ['class' => 'checkbox-inline'] : [];
 
@@ -363,7 +375,7 @@ class BootstrapForm
      * @param  array $options
      * @return string
      */
-    public function checkboxes($name, $label = null, $choices = array(), $checkedValues = array(), $inline = false, $options = array())
+    public function checkboxes($name, $label = null, array $choices = array(), array $checkedValues = array(), $inline = false, array $options = array())
     {
         $elements = '';
 
@@ -387,7 +399,7 @@ class BootstrapForm
      * @param  array    $options
      * @return string
      */
-    public function radio($name, $label, $value, $checked = null, $inline = false, $options = array())
+    public function radio($name, $label, $value, $checked = null, $inline = false, array $options = array())
     {
         $labelOptions = $inline ? ['class' => 'radio-inline'] : [];
 
@@ -408,7 +420,7 @@ class BootstrapForm
      * @param  array    $options
      * @return string
      */
-    public function radios($name, $label = null, $choices = array(), $checkedValue = null, $inline = false, $options = array())
+    public function radios($name, $label = null, array $choices = array(), $checkedValue = null, $inline = false, array $options = array())
     {
         $elements = '';
 
@@ -429,7 +441,7 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function label($name, $value = null, $options = array())
+    public function label($name, $value = null, array $options = array())
     {
         $options = $this->getLabelOptions($options);
 
@@ -443,7 +455,7 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function submit($value = null, $options = array())
+    public function submit($value = null, array $options = array())
     {
         $options = array_merge(['class' => 'btn btn-primary'], $options);
 
@@ -457,7 +469,7 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function reset($value = null, $options = array())
+    public function reset($value = null, array $options = array())
     {
         $options = array_merge(['class' => 'btn btn-primary'], $options);
 
@@ -472,7 +484,7 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function file($name, $label = null, $options = array())
+    public function file($name, $label = null, array $options = array())
     {
         $label = $this->getLabelTitle($label, $name);
 
@@ -485,7 +497,7 @@ class BootstrapForm
         $inputElement = $this->form->input('file', $name, null, $options);
 
         $input = $inputElement;
-        if (isset($options['required'])){
+        if (array_key_exists('required',$options)){
             $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
         }
 
@@ -504,17 +516,17 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function input($type, $name, $label = null, $value = null, $options = array())
+    public function input($type, $name, $label = null, $value = null, array $options = array())
     {
         $label = $this->getLabelTitle($label, $name);
 
         $options = $this->getFieldOptions($options);
         $wrapperOptions = ['class' => $this->getRightColumnClass()];
         
-        $inputElement = $type == 'password' ? $this->form->password($name, $options) : $this->form->{$type}($name, $value, $options);
+        $inputElement = $type === 'password' ? $this->form->password($name, $options) : $this->form->{$type}($name, $value, $options);
 
         $input = $inputElement;
-        if (isset($options['required'])){
+        if (array_key_exists('required',$options)){
             $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
         }
 
@@ -522,43 +534,6 @@ class BootstrapForm
 
         return $this->getFormGroup($name, $label, $groupElement);
     }
-
-//    /**
-//     * Create the select group for an element with the correct classes for errors.
-//     * @param $name
-//     * @param $label
-//     * @param $selectOptions array(array(key=>'',value=>''))
-//     * @param null $defaultValue
-//     * @param array $options
-//     * @return string
-//     */
-//    public function select($name,$label,$selectOptions,$defaultValue=null,$options = array())
-//    {
-//        $label = $this->getLabelTitle($label, $name);
-//
-//        $options = $this->getFieldOptions($options);
-//        $wrapperOptions = ['class' => $this->getRightColumnClass()];
-//        
-//        $htmlOptions = '';
-//        foreach ($selectOptions as $row){
-//            $selected = '';
-//            if ($row['key']===$defaultValue){
-//                $selected = 'selected';
-//            }
-//            $htmlOptions .= '<option value="'.$row['key'].'" '.$selected.'>'.$row['value'].'</option>';
-//        }
-//
-//        $inputElement = '<select name="'.$name.'">'.$htmlOptions.'</select>';
-//        
-//        $input = $inputElement;
-//        if (isset($options['required'])){
-//            $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
-//        }
-//
-//        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
-//
-//        return $this->getFormGroup($name, $label, $groupElement);
-//    }
 
     /**
      * Get the label title for a form field, first by using the provided one
@@ -596,7 +571,7 @@ class BootstrapForm
      * @param  array  $options
      * @return array
      */
-    protected function getFormGroupOptions($name, $options = array())
+    protected function getFormGroupOptions($name, array $options = array())
     {
         $class = trim('form-group ' . $this->getFieldErrorClass($name));
 
@@ -610,7 +585,7 @@ class BootstrapForm
      * @param  array  $options
      * @return array
      */
-    protected function getFieldOptions($options = array())
+    protected function getFieldOptions(array $options = array())
     {
         $options['class'] = trim('form-control ' . $this->getFieldOptionsClass($options));
 
@@ -635,7 +610,7 @@ class BootstrapForm
      * @param  array  $options
      * @return array
      */
-    protected function getLabelOptions($options = array())
+    protected function getLabelOptions(array $options = array())
     {
         $class = trim('control-label ' . $this->getLeftColumnClass());
 
@@ -702,6 +677,7 @@ class BootstrapForm
 
             return $this->getErrors()->first($field, $format);
         }
+        return null;
     }
 
     /**
