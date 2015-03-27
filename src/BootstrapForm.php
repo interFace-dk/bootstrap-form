@@ -94,21 +94,28 @@ class BootstrapForm
      */
     public function portletOpen($portletOptions,array $formOptions = array())
     {
-        $form = $this->open($formOptions);
-        return '<div class="portlet box blue">
+        $html = '<div class="portlet box blue">
                     <div class="portlet-title">
                         <div class="caption">
                             <i class="fa '.$portletOptions['titleIcon'].'"></i> '.$portletOptions['title'].'
                         </div>
                     </div>
-                <div class="portlet-body form">'.$form;
+                <div class="portlet-body form">';
+        if (array_key_exists('id',$formOptions)){
+            $html.=$this->open($formOptions);
+        }
+        return $html;
     }
 
     /**
+     * @param bool $closeForm
      * @return string
      */
-    public function portletClose()
+    public function portletClose($closeForm = true)
     {
+        if (!$closeForm){
+            return '</div></div>';
+        }
         return $this->form->close().'</div></div>';
     }
 
@@ -225,6 +232,26 @@ class BootstrapForm
     public function text($name, $label = null, $value = null, array $options = array())
     {
         return $this->input('text', $name, $label, $value, $options);
+    }
+
+    /**
+     * Create a Bootstrap span field.
+     *
+     * @param  string  $name
+     * @param  string  $label
+     * @param  string  $value
+     * @return string
+     */
+    public function span($name, $label = null, $value = null, array $incOptions = array())
+    {
+        $label = $this->getLabelTitle($label, $name);
+
+        $wrapperOptions = ['class' => $this->getRightColumnClass()];
+        $options = $this->getFieldOptions($incOptions);
+
+        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'><span class="'.$options['class'].'">'.$value.'</span></div>';
+
+        return $this->getFormGroup($name, $label, $groupElement,$incOptions);
     }
 
     /**
@@ -513,14 +540,14 @@ class BootstrapForm
      * @param  string  $name
      * @param  string  $label
      * @param  string  $value
-     * @param  array   $options
+     * @param  array   $incOptions
      * @return string
      */
-    public function input($type, $name, $label = null, $value = null, array $options = array())
+    public function input($type, $name, $label = null, $value = null, array $incOptions = array())
     {
         $label = $this->getLabelTitle($label, $name);
 
-        $options = $this->getFieldOptions($options);
+        $options = $this->getFieldOptions($incOptions);
         $wrapperOptions = ['class' => $this->getRightColumnClass()];
         
         $inputElement = $type === 'password' ? $this->form->password($name, $options) : $this->form->{$type}($name, $value, $options);
@@ -532,7 +559,7 @@ class BootstrapForm
 
         $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
 
-        return $this->getFormGroup($name, $label, $groupElement);
+        return $this->getFormGroup($name, $label, $groupElement,$incOptions);
     }
 
     /**
@@ -551,14 +578,20 @@ class BootstrapForm
     /**
      * Get a form group comprised of a label, form element and errors.
      *
-     * @param  string  $name
-     * @param  string  $value
-     * @param  string  $element
+     * @param  string $name
+     * @param  string $value
+     * @param  string $element
+     * @param array $options
      * @return string
      */
-    protected function getFormGroup($name, $value, $element)
+    protected function getFormGroup($name, $value, $element, array $options = array())
     {
-        $options = $this->getFormGroupOptions($name);
+        $groupOptions = array();
+        if (array_key_exists('hide',$options)){
+            $groupOptions = array('hide');
+        }
+
+        $options = $this->getFormGroupOptions($name,$groupOptions);
 
         return '<div '.$this->html->attributes($options).'>'.$this->label($name, $value).$element.'</div>';
     }
