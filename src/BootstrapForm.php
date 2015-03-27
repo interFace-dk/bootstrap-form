@@ -173,8 +173,13 @@ class BootstrapForm
         $label = $this->getLabelTitle($label, $name);
         $inputElement = '<p'.$this->html->attributes($options).'>'.e($value).'</p>';
 
+        $input = $inputElement;
+        if (isset($options['required'])){
+            $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
+        }
+
         $wrapperOptions = ['class' => $this->getRightColumnClass()];
-        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$inputElement.$this->getFieldError($name).'</div>';
+        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
 
         return $this->getFormGroup($name, $label, $groupElement);
     }
@@ -373,7 +378,12 @@ class BootstrapForm
 
         $inputElement = $this->form->input('file', $name, null, $options);
 
-        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$inputElement.$this->getFieldError($name).'</div>';
+        $input = $inputElement;
+        if (isset($options['required'])){
+            $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
+        }
+
+        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
 
         return $this->getFormGroup($name, $label, $groupElement);
     }
@@ -397,7 +407,12 @@ class BootstrapForm
 
         $inputElement = $type == 'password' ? $this->form->password($name, $options) : $this->form->{$type}($name, $value, $options);
 
-        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$inputElement.$this->getFieldError($name).'</div>';
+        $input = $inputElement;
+        if (isset($options['required'])){
+            $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
+        }
+
+        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
 
         return $this->getFormGroup($name, $label, $groupElement);
     }
