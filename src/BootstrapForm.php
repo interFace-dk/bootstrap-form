@@ -451,6 +451,20 @@ class BootstrapForm
     }
 
     /**
+     * Create a Boostrap reset button.
+     *
+     * @param  string  $value
+     * @param  array   $options
+     * @return string
+     */
+    public function reset($value = null, $options = array())
+    {
+        $options = array_merge(['class' => 'btn btn-primary'], $options);
+
+        return $this->form->reset($value, $options);
+    }
+
+    /**
      * Create a Boostrap file upload button.
      *
      * @param  string  $name
