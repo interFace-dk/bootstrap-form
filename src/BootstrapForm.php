@@ -236,7 +236,7 @@ class BootstrapForm
      * @param array $options
      * @return string
      */
-    public function select($name, array $optionsList = array(), $label = null, $value = null, array $options = array())
+    public function select($name, $optionsList, $label = null, $value = null, array $options = array())
     {
 
         $label = $this->getLabelTitle($label, $name);
