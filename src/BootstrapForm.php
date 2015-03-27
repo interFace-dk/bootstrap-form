@@ -83,6 +83,23 @@ class BootstrapForm
         return $this->form->open($options);
     }
 
+    public function portletOpen($portletOptions,$formOptions = array())
+    {
+        $form = $this->open($formOptions);
+        return '<div class="portlet box blue">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa '.$portletOptions['titleIcon'].'"></i> '.$portletOptions['title'].'
+                        </div>
+                    </div>
+                <div class="portlet-body form">'.$form;
+    }
+
+    public function portletClose()
+    {
+        return $this->form->close().'</div></div>';
+    }
+
     /**
      * Close the form
      *
@@ -215,7 +232,53 @@ class BootstrapForm
         $options = $this->getFieldOptions($options);
         $wrapperOptions = ['class' => $this->getRightColumnClass()];
 
-        $inputElement = $this->form->select($name,$optionsList,$value,$options);
+        $optionsArray = array();
+        foreach ($optionsList as $row){
+            $optionsArray[$row->id]=$row->name;
+        }
+
+        $inputElement = $this->form->select($name,$optionsArray,$value,$options);
+
+        $input = $inputElement;
+        if (isset($options['required'])){
+            $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
+        }
+
+        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
+
+        return $this->getFormGroup($name, $label, $groupElement);
+    }
+
+    /**
+     * Create a Bootstrap select2me field.
+     * @param $name
+     * @param $optionsList
+     * @param null $label
+     * @param null $value
+     * @param array $options
+     * @return string
+     */
+    public function select2me($name, $optionsList, $label = null, $value = null, $options = array())
+    {
+
+        $label = $this->getLabelTitle($label, $name);
+
+        if (!isset($options['class'])){
+            $options['class']='select2me';
+        }
+        $options = $this->getFieldOptions($options);
+        $wrapperOptions = ['class' => $this->getRightColumnClass()];
+
+        $optionsArray = array();
+        if (isset($options['data-placeholder'])){
+            $optionsArray['']='';
+        }
+        foreach ($optionsList as $row){
+            $optionsArray[$row->id]=$row->name;
+        }
+
+
+        $inputElement = $this->form->select($name,$optionsArray,$value,$options);
 
         $input = $inputElement;
         if (isset($options['required'])){
