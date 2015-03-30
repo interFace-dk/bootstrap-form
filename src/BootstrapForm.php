@@ -334,17 +334,17 @@ class BootstrapForm
      * @param $name
      * @param $optionsList
      * @param null $label
-     * @param null $value
+     * @param int|array $value
      * @param array $options
      * @return string
      */
-    public function select2($name, $optionsList, $label = null, $value = null, array $options = array())
+    public function select2($name, $optionsList, $label = null, $value, array $options = array())
     {
 
         $label = $this->getLabelTitle($label, $name);
 
         if (!array_key_exists('class',$options)){
-            $options['class']='select2me';
+            $options['class']='select2';
         }
         $options = $this->getFieldOptions($options);
         $wrapperOptions = ['class' => $this->getRightColumnClass()];
