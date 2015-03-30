@@ -330,6 +330,44 @@ class BootstrapForm
     }
 
     /**
+     * Create a Bootstrap select2 field.
+     * @param $name
+     * @param $optionsList
+     * @param null $label
+     * @param null $value
+     * @param array $options
+     * @return string
+     */
+    public function select2($name, $optionsList, $label = null, $value = null, array $options = array())
+    {
+
+        $label = $this->getLabelTitle($label, $name);
+
+        if (!array_key_exists('class',$options)){
+            $options['class']='select2me';
+        }
+        $options = $this->getFieldOptions($options);
+        $wrapperOptions = ['class' => $this->getRightColumnClass()];
+
+        $optionsArray = array();
+        foreach ($optionsList as $row){
+            $optionsArray[$row->id]=$row->name;
+        }
+
+
+        $inputElement = $this->form->select($name,$optionsArray,$value,$options);
+
+        $input = $inputElement;
+        if (array_key_exists('required',$options)){
+            $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
+        }
+
+        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
+
+        return $this->getFormGroup($name, $label, $groupElement);
+    }
+
+    /**
      * Create a Bootstrap email field input.
      *
      * @param  string  $name
@@ -587,8 +625,11 @@ class BootstrapForm
     protected function getFormGroup($name, $value, $element, array $options = array())
     {
         $groupOptions = array();
-        if (array_key_exists('hide',$options)){
-            $groupOptions = array('hide');
+        if (array_key_exists('class',$options)){
+            $classes = explode(' ',$options['class']);
+            if (in_array('hide',$classes,true)){
+                $groupOptions = array('class'=>'hide');
+            }
         }
 
         $options = $this->getFormGroupOptions($name,$groupOptions);
