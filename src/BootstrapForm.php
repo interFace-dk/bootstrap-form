@@ -248,8 +248,67 @@ class BootstrapForm
 
         $wrapperOptions = ['class' => $this->getRightColumnClass()];
         $options = $this->getFieldOptions($incOptions);
+        if (!$value&&!is_numeric($value)){
+            $value = 'Не указан';
+        }
 
         $groupElement = '<div '.$this->html->attributes($wrapperOptions).'><span class="'.$options['class'].'">'.$value.'</span></div>';
+
+        return $this->getFormGroup($name, $label, $groupElement,$incOptions);
+    }
+
+    /**
+     * Create a Bootstrap Checkbox list.
+     *
+     * @param  string $name
+     * @param  string $label
+     * @param  array $values array('value'=>'','name'=>'','checked'=>true|false)
+     * @param array $incOptions
+     * @return string
+     */
+    public function checkboxList($name, $label = null, array $values = array(), array $incOptions = array())
+    {
+        $wrapperOptions = ['class' => $this->getRightColumnClass()];
+        $wrapperOptions['class'].='checkbox-list';
+        $options = $this->getFieldOptions($incOptions);
+        $items = '';
+        foreach ($values as $row){
+            $title = $this->getLabelTitle($row['name'], $name);
+            $inputElement = $this->form->checkbox($name, $row['value'], $row['checked'], $options);
+            $items.= '<label>'.$inputElement.$title.'</label>';
+        }
+
+        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$items.'</div>';
+
+        return $this->getFormGroup($name, $label, $groupElement,$incOptions);
+    }
+
+    /**
+     * Create a Bootstrap View list.
+     *
+     * @param  string $name
+     * @param  string $label
+     * @param  array $values array('id'=>'','name'=>'')
+     * @param array $incOptions
+     * @return string
+     */
+    public function viewList($name, $label = null, $values, array $incOptions = array())
+    {
+        $label = $this->getLabelTitle($label, $name);
+
+        $wrapperOptions = ['class' => $this->getRightColumnClass()];
+        $options = $this->getFieldOptions($incOptions);
+
+        $list = '';
+        foreach ($values as $row){
+            $list .='<li id="'.$row->id.'">'.$row->name.'</li>';
+        }
+        $items  = '<span class="'.$options['class'].'">Нет элементов</span>';
+        if ($list){
+            $items  = '<ul id="list_'.$name.'">'.$list.'</ul>';
+        }
+
+        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$items.'</div>';
 
         return $this->getFormGroup($name, $label, $groupElement,$incOptions);
     }
