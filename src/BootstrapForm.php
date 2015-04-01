@@ -687,7 +687,7 @@ class BootstrapForm
         if (array_key_exists('class',$options)){
             $classes = explode(' ',$options['class']);
             if (in_array('hide',$classes,true)){
-                $groupOptions = array('class'=>'hide');
+                @$groupOptions['class']='form-group hide';
             }
         }
 
