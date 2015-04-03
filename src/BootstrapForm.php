@@ -372,7 +372,11 @@ class BootstrapForm
             $optionsArray['']='';
         }
         foreach ($optionsList as $row){
-            $optionsArray[$row->id]=$row->name;
+            if (is_array($row)){
+                $optionsArray[$row['id']]=$row['name'];
+            } else {
+                $optionsArray[$row->id]=$row->name;
+            }
         }
 
 
