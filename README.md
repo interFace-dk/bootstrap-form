@@ -1,6 +1,10 @@
 BootstrapForm, forms for Laravel 5
 ==================================
 
+Warning: Uses a modified design html to display correctly in the template "Metronic" (http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469).
+
+Possible incorrect work on the native bootstrap.
+
 This is a package for simply creating Bootstrap 3 styled form groups in Laravel 5. It extends the normal form builder to provide you with horizontal form groups completed with labels, error messages and appropriate class usage.
 
 ## Introduction
