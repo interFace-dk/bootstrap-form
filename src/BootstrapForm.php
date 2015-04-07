@@ -266,12 +266,13 @@ class BootstrapForm
         }
 
         $groupElement = '
-        <div id="'.$name.'"
+        <div id="'.$name.'" class="cropImageModule"
             data-uploadUrl="'.$imageOptions['uploadUrl'].'"
             data-minWidth="'.$imageOptions['minWidth'].'"
             data-minHeight="'.$imageOptions['minHeight'].'"
             data-previewWidth="'.$imageOptions['previewWidth'].'"
             data-previewHeight="'.$imageOptions['previewHeight'].'"
+            data-previewImageType="'.$imageOptions['previewImageType'].'"
         >
            <div class="fileinput fileinput-new">
                 <div class="fileinput-preview thumbnail js-preview" style="float:left;">
