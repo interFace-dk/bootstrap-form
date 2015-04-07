@@ -257,6 +257,42 @@ class BootstrapForm
         return $this->getFormGroup($name, $label, $groupElement,$incOptions);
     }
 
+    public function cropImageInput($name, $label = null, $value=null, array $imageOptions = array(), array $incOptions = array()){
+        $label = $this->getLabelTitle($label, $name);
+
+        $previewImage = '';
+        if ($value){
+            $previewImage = '<img src='.$value.' />';
+        }
+
+        $groupElement = '
+        <div id="'.$name.'"
+            data-uploadUrl="'.$imageOptions['uploadUrl'].'"
+            data-minWidth="'.$imageOptions['minWidth'].'"
+            data-minHeight="'.$imageOptions['minHeight'].'"
+            data-previewWidth="'.$imageOptions['previewWidth'].'"
+            data-previewHeight="'.$imageOptions['previewHeight'].'"
+        >
+           <div class="fileinput fileinput-new">
+                <div class="fileinput-preview thumbnail js-preview" style="float:left;">
+                    '.$previewImage.'
+                </div>
+                <div class="js-fileapi-wrapper" style="float:left; margin-left:10px;">
+                    <div class="btn default btn-file js-browse">
+                        <span class="btn-txt">Выбрать файл</span>
+                        <input type="file" name="image">
+                    </div>
+                    <div class="js-upload" style="display: none;">
+                        <div class="progress progress-success"><div class="js-progress bar"></div></div>
+                        <span class="btn-txt">Uploading</span>
+                    </div>
+                </div>
+            </div>
+        </div>';
+
+        return $this->getFormGroup($name, $label, $groupElement,$incOptions);
+    }
+
     /**
      * Create a Bootstrap Checkbox list.
      *
