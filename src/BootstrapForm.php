@@ -260,7 +260,7 @@ class BootstrapForm
     public function cropImageInput($name, $label = null, $value=null, array $imageOptions = array(), array $incOptions = array()){
         $label = $this->getLabelTitle($label, $name);
 
-        $previewImage = '';
+        $previewImage = '<img src="http://placehold.it/'.$imageOptions['previewWidth'].'x'.$imageOptions['previewHeight'].'&text='.$imageOptions['minWidth'].'x'.$imageOptions['minHeight'].'" />';
         if ($value){
             $previewImage = '<img src='.$value.' />';
         }
@@ -275,9 +275,8 @@ class BootstrapForm
             data-previewImageType="'.$imageOptions['previewImageType'].'"
         >
            <div class="fileinput fileinput-new">
-                <div class="fileinput-preview thumbnail js-preview" style="float:left;">
-                    '.$previewImage.'
-                </div>
+                <div class="fileinput-preview thumbnail uploaded" style="float:left;">'.$previewImage.'</div>
+                <div class="fileinput-preview thumbnail js-preview hide" style="float:left;"></div>
                 <div class="js-fileapi-wrapper" style="float:left; margin-left:10px;">
                     <div class="btn default btn-file js-browse">
                         <span class="btn-txt">Выбрать файл</span>
