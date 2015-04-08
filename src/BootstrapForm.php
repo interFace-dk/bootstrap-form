@@ -274,6 +274,7 @@ class BootstrapForm
             data-previewHeight="'.$imageOptions['previewHeight'].'"
             data-previewImageType="'.$imageOptions['previewImageType'].'"
         >
+            <input type="text" name="'.$name.'" class="hide"/>
            <div class="fileinput fileinput-new">
                 <div class="fileinput-preview thumbnail uploaded" style="float:left;">'.$previewImage.'</div>
                 <div class="fileinput-preview thumbnail js-preview hide" style="float:left;"></div>
