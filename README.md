@@ -170,3 +170,6 @@ By simply passing an array of value/label pairs you can generate a group of chec
 
 	// Pretty simple.
 	BootstrapForm::close();
+
+
+### Added support for date input mask using: https://github.com/RobinHerbots/jquery.inputmask
