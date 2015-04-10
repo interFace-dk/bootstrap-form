@@ -234,6 +234,22 @@ class BootstrapForm
         return $this->input('text', $name, $label, $value, $options);
     }
 
+
+    /**
+     * Create a Bootstrap date field input.
+     *
+     * @param  string  $name
+     * @param  string  $label
+     * @param  string  $value
+     * @param  array   $options
+     * @return string
+     */
+    public function date($name, $label = null, $value = null, array $options = array())
+    {
+
+        return $this->input('text', $name, $label, $value, array_merge($options, array("data-inputmask" => "'alias': 'dd/mm/yyyy'")));
+    }
+
     /**
      * Create a Bootstrap span field.
      *
