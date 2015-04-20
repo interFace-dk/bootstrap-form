@@ -385,7 +385,11 @@ class BootstrapForm
 
         $optionsArray = array();
         foreach ($optionsList as $row){
-            $optionsArray[$row->id]=$row->name;
+            if (is_string($row)) {
+                $optionsArray[$row] = $row;
+            } else {
+                $optionsArray[$row->id]=$row->name;
+            }
         }
 
         $inputElement = $this->form->select($name,$optionsArray,$value,$options);
@@ -467,7 +471,11 @@ class BootstrapForm
 
         $optionsArray = array();
         foreach ($optionsList as $row){
-            $optionsArray[$row->id]=$row->name;
+            if (is_string($row)) {
+                $optionsArray[$row] = $row;
+            } else {
+                $optionsArray[$row->id]=$row->name;
+            }
         }
 
 
@@ -703,7 +711,7 @@ class BootstrapForm
 
         $options = $this->getFieldOptions($incOptions);
         $wrapperOptions = ['class' => $this->getRightColumnClass()];
-        
+
         $inputElement = $type === 'password' ? $this->form->password($name, $options) : $this->form->{$type}($name, $value, $options);
 
         $input = $inputElement;
