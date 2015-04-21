@@ -266,6 +266,7 @@ class BootstrapForm
         }
 
         $groupElement = '
+        <input type="text" name="'.$name.'" style="position: absolute; top: 0px; left: 0; height:1px; width: 1px; background: none; border: none;" />
         <div id="'.$name.'" class="cropImageModule"
             data-uploadUrl="'.$imageOptions['uploadUrl'].'"
             data-minWidth="'.$imageOptions['minWidth'].'"
@@ -274,7 +275,6 @@ class BootstrapForm
             data-previewHeight="'.$imageOptions['previewHeight'].'"
             data-previewImageType="'.$imageOptions['previewImageType'].'"
         >
-            <input type="text" name="'.$name.'" class="hide"/>
            <div class="fileinput fileinput-new">
                 <div class="fileinput-preview thumbnail uploaded" style="float:left;">'.$previewImage.'</div>
                 <div class="fileinput-preview thumbnail js-preview hide" style="float:left;"></div>
@@ -290,6 +290,19 @@ class BootstrapForm
                 </div>
             </div>
         </div>';
+
+        return $this->getFormGroup($name, $label, $groupElement,$incOptions);
+    }
+
+    public function cropImageView($name, $label = null, $value=null, array $imageOptions = array(), array $incOptions = array()){
+        $label = $this->getLabelTitle($label, $name);
+
+        $previewImage = '<img src="http://placehold.it/'.$imageOptions['previewWidth'].'x'.$imageOptions['previewHeight'].'&text='.$imageOptions['minWidth'].'x'.$imageOptions['minHeight'].'" />';
+        if ($value){
+            $previewImage = '<img src='.$value.' />';
+        }
+
+        $groupElement = '<div class="fileinput-preview thumbnail" style="width:'.$imageOptions['previewWidth'].'px; height:'.$imageOptions['previewHeight'].'px">'.$previewImage.'</div>';
 
         return $this->getFormGroup($name, $label, $groupElement,$incOptions);
     }
