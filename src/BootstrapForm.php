@@ -252,7 +252,7 @@ class BootstrapForm
             $value = 'Не указан';
         }
 
-        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'><span class="'.$options['class'].'">'.$value.'</span></div>';
+        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'><span name="'.$name.'" class="'.$options['class'].'">'.$value.'</span></div>';
 
         return $this->getFormGroup($name, $label, $groupElement,$incOptions);
     }
