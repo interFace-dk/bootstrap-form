@@ -607,8 +607,8 @@ class BootstrapForm
 
             $elements .= $this->radio($name, $choiceLabel, $value, $checked, $inline, $options);
         }
-
-        return $this->getFormGroup($name, $label, $elements);
+        
+        return $this->getFormGroup($name, $label, '<div class="radio-list">'.$elements.'</div>');
     }
 
     /**
