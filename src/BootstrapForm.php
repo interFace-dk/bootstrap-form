@@ -697,10 +697,12 @@ class BootstrapForm
     public function input($type, $name, $label = null, $value = null, array $incOptions = array())
     {
         $label = $this->getLabelTitle($label, $name);
-
-        $options = $this->getFieldOptions($incOptions);
+        $formControlOptions = $incOptions;
+        if (array_key_exists('class',$formControlOptions)){
+            $formControlOptions['class']=str_replace('hide','',$formControlOptions['class']);
+        }
+        $options = $this->getFieldOptions($formControlOptions);
         $wrapperOptions = ['class' => $this->getRightColumnClass()];
-        
         $inputElement = $type === 'password' ? $this->form->password($name, $options) : $this->form->{$type}($name, $value, $options);
 
         $input = $inputElement;
