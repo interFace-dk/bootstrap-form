@@ -429,6 +429,11 @@ class BootstrapForm
             }
         }
 
+        $formGroupOptions['class']='';
+        if (strpos($options['class'],'hide')){
+            $options['class'] = trim(str_replace('hide','',$options['class']));
+            $formGroupOptions['class'] = 'hide';
+        }
 
         $inputElement = $this->form->select($name,$optionsArray,$value,$options);
 
@@ -439,7 +444,7 @@ class BootstrapForm
 
         $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
 
-        return $this->getFormGroup($name, $label, $groupElement);
+        return $this->getFormGroup($name, $label, $groupElement,$formGroupOptions);
     }
 
     /**
