@@ -56,6 +56,18 @@ class BootstrapForm
         $this->session = $session;
     }
 
+    public function xEditableText($id, $title, $type = 'text', $value = null, array $opts = array()){
+        $placeholder = '';
+        if (array_key_exists('placeholder',$opts)){
+            $placeholder = $opts['placeholder'];
+        }
+        $placement = 'top';
+        if (array_key_exists('placement',$opts)){
+            $placement = $opts['placement'];
+        }
+        return '<a href="javascript:void(0);" id="'.$id.'" data-type="'.$type.'" data-placement="'.$placement.'" data-placeholder="'.$placeholder.'"  data-original-title="'.$title.'" data-emptytext="'.$title.'">'.$value.'</a>';
+    }
+
     /**
      * Open a form while passing a model and the routes for storing or updating
      * the model. This will set the correct route along with the correct
