@@ -247,6 +247,25 @@ class BootstrapForm
     }
 
     /**
+     * Create a Bootstrap tags field input.
+     *
+     * @param  string  $name
+     * @param  string  $label
+     * @param  string  $value
+     * @param  array   $options
+     * @return string
+     */
+    public function tags($name, $label = null, $value = null, array $options = array())
+    {
+        if (array_key_exists('class',$options)){
+            $options['class'] = 'tags '.$options['class'];
+        } else {
+            $options['class'] = 'tags';
+        }
+        return $this->input('text', $name, $label, $value, $options);
+    }
+
+    /**
      * Create a Bootstrap span field.
      *
      * @param  string  $name
