@@ -500,11 +500,63 @@ class BootstrapForm
 
         $optionsArray = array();
         foreach ($optionsList as $row){
-            $optionsArray[$row->id]=$row->name;
+            if (is_array($row)){
+                $optionsArray[$row['id']]=$row['name'];
+            } else {
+                $optionsArray[$row->id]=$row->name;
+            }
         }
 
-
         $inputElement = $this->form->select($name,$optionsArray,$value,$options);
+
+        $input = $inputElement;
+        if (array_key_exists('required',$options)){
+            $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
+        }
+
+        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
+
+        return $this->getFormGroup($name, $label, $groupElement);
+    }
+
+    /**
+     * Create a Bootstrap select2 field.
+     * @param $name
+     * @param $optionsList
+     * @param null $label
+     * @param int|array $value
+     * @param array $options
+     * @return string
+     */
+    public function select2json($name, $optionsList, $label = null, $value, array $options = array())
+    {
+
+        $label = $this->getLabelTitle($label, $name);
+
+        if (!array_key_exists('class',$options)){
+            $options['class']='select2json';
+        }
+        $options = $this->getFieldOptions($options);
+        $wrapperOptions = ['class' => $this->getRightColumnClass()];
+
+        $optionsArray = array();
+        foreach ($optionsList as $row){
+            if (is_array($row)){
+                $optionsArray[]=array(
+                    'id'=>$row['id'],
+                    'text'=>$row['name']
+                );
+            } else {
+                $optionsArray[]=array(
+                    'id'=>$row->id,
+                    'text'=>$row->name
+                );
+            }
+        }
+
+        $options['data-query'] = json_encode($optionsArray);
+
+        $inputElement = $this->form->input('hidden',$name,$value,$options);
 
         $input = $inputElement;
         if (array_key_exists('required',$options)){
