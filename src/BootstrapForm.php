@@ -291,7 +291,7 @@ class BootstrapForm
     public function cropImageInput($name, $label = null, $value=null, array $imageOptions = array(), array $incOptions = array()){
         $label = $this->getLabelTitle($label, $name);
 
-        $previewImage = '<img src="https://placeholdit.imgix.net/~text?txtsize=11&txt='.$imageOptions['previewWidth'].'x'.$imageOptions['previewHeight'].'&w='.$imageOptions['previewWidth'].'&h='.$imageOptions['previewHeight'].'" />';
+        $previewImage = '<img src="https://placeholdit.imgix.net/~text?txtsize=30&txt='.$imageOptions['previewWidth'].'x'.$imageOptions['previewHeight'].'&w='.$imageOptions['previewWidth'].'&h='.$imageOptions['previewHeight'].'" />';
         if ($value){
             $previewImage = '<img src='.$value.' />';
         }
