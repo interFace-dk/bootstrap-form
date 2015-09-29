@@ -291,7 +291,7 @@ class BootstrapForm
     public function cropImageInput($name, $label = null, $value=null, array $imageOptions = array(), array $incOptions = array()){
         $label = $this->getLabelTitle($label, $name);
 
-        $previewImage = '<img src="https://placeholdit.imgix.net/~text?txtsize=30&txt='.$imageOptions['previewWidth'].'x'.$imageOptions['previewHeight'].'&w='.$imageOptions['previewWidth'].'&h='.$imageOptions['previewHeight'].'" />';
+        $previewImage = '<img src="http://placehold.it/'.$imageOptions['previewWidth'].'x'.$imageOptions['previewHeight'].'&text='.$imageOptions['minWidth'].'x'.$imageOptions['minHeight'].'" />';
         if ($value){
             $previewImage = '<img src='.$value.' />';
         }
@@ -530,13 +530,11 @@ class BootstrapForm
      */
     public function select2json($name, $optionsList, $label = null, $value, array $options = array())
     {
-
         $label = $this->getLabelTitle($label, $name);
 
-        if (!array_key_exists('class',$options)){
-            $options['class']='select2json';
-        }
+        $options['class'] .=' select2json';
         $options = $this->getFieldOptions($options);
+
         $wrapperOptions = ['class' => $this->getRightColumnClass()];
 
         $optionsArray = array();
@@ -554,9 +552,10 @@ class BootstrapForm
             }
         }
 
-        $options['data-query'] = json_encode($optionsArray);
-
-        $inputElement = $this->form->input('hidden',$name,$value,$options);
+        $itemOptions = $options;
+        $itemOptions['data-query'] = json_encode($optionsArray);
+        $itemOptions['class']=str_replace('hide','',$itemOptions['class']);
+        $inputElement = $this->form->input('hidden',$name,$value,$itemOptions);
 
         $input = $inputElement;
         if (array_key_exists('required',$options)){
@@ -565,7 +564,7 @@ class BootstrapForm
 
         $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
 
-        return $this->getFormGroup($name, $label, $groupElement);
+        return $this->getFormGroup($name, $label, $groupElement, $options);
     }
 
     /**
