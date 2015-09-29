@@ -532,6 +532,9 @@ class BootstrapForm
     {
         $label = $this->getLabelTitle($label, $name);
 
+        if (!array_key_exists('class',$options)){
+            $options['class']='';
+        }
         $options['class'] .=' select2json';
         $options = $this->getFieldOptions($options);
 
