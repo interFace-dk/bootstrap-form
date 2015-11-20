@@ -558,18 +558,11 @@ class BootstrapForm
         $itemOptions = $options;
         $itemOptions['data-query'] = json_encode($optionsArray);
         $itemOptions['class']=str_replace('hide','',$itemOptions['class']);
-
-        $inputElement = '<input name="'.$name.' type="hidden" value="'.$value.'"';
-        foreach ($itemOptions as $key=>$value){
-            $inputElement.=' '.$key.'=\''.$value.'\'';
-        }
-        $inputElement.= ' />';
-
-//        $inputElement = $this->form->input('hidden',$name,$value,$itemOptions);
+        $inputElement = $this->form->input('hidden',$name,$value,$itemOptions);
 
         $input = $inputElement;
         if (array_key_exists('required',$options)){
-            $input = '<div class="input-icon right"><i class="fa"></i></div>';
+            $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
         }
 
         $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
