@@ -545,12 +545,12 @@ class BootstrapForm
             if (is_array($row)){
                 $optionsArray[]=array(
                     'id'=>$row['id'],
-                    'text'=>$row['name']
+                    'text'=>html_entity_decode($row['name'])
                 );
             } else {
                 $optionsArray[]=array(
                     'id'=>$row->id,
-                    'text'=>$row->name
+                    'text'=>html_entity_decode($row->name)
                 );
             }
         }
