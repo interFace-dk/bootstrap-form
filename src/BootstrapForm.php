@@ -873,6 +873,9 @@ class BootstrapForm
                 return $this->getErrors()->get($field, $format);
             }
 
+            //Change arrays to dot syntax (test[1][field] = test.1.field)
+            $field = preg_replace('/\[(\d+)\]\[(.*)\]/', ".$1.$2", $field);
+
             return $this->getErrors()->first($field, $format);
         }
         return null;
