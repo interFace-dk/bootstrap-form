@@ -210,9 +210,9 @@ class BootstrapForm
         $inputElement = '<p'.$this->html->attributes($options).'>'.e($value).'</p>';
 
         $input = $inputElement;
-        if (array_key_exists('required',$options)){
-            $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
-        }
+        //if (array_key_exists('required',$options)){
+        //    $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
+        //}
 
         $wrapperOptions = ['class' => $this->getRightColumnClass()];
         $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
@@ -395,9 +395,9 @@ class BootstrapForm
         $inputElement = $this->form->select($name,$optionsArray,$value,$options);
 
         $input = $inputElement;
-        if (array_key_exists('required',$options)){
-            $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
-        }
+        //if (array_key_exists('required',$options)){
+        //    $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
+        //}
 
         $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
 
@@ -440,9 +440,9 @@ class BootstrapForm
         $inputElement = $this->form->select($name,$optionsArray,$value,$options);
 
         $input = $inputElement;
-        if (array_key_exists('required',$options)){
-            $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
-        }
+        //if (array_key_exists('required',$options)){
+        //    $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
+        //}
 
         $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
 
@@ -482,9 +482,9 @@ class BootstrapForm
         $inputElement = $this->form->select($name,$optionsArray,$value,$options);
 
         $input = $inputElement;
-        if (array_key_exists('required',$options)){
-            $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
-        }
+        //if (array_key_exists('required',$options)){
+        //    $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
+        //}
 
         $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
 
@@ -686,9 +686,9 @@ class BootstrapForm
         $inputElement = $this->form->input('file', $name, null, $options);
 
         $input = $inputElement;
-        if (array_key_exists('required',$options)){
-            $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
-        }
+        //if (array_key_exists('required',$options)){
+        //    $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
+        //}
 
         $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
 
@@ -715,9 +715,9 @@ class BootstrapForm
         $inputElement = $type === 'password' ? $this->form->password($name, $options) : $this->form->{$type}($name, $value, $options);
 
         $input = $inputElement;
-        if (array_key_exists('required',$options)){
-            $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
-        }
+        //if (array_key_exists('required',$options)){
+        //    $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
+        //}
 
         $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
 
