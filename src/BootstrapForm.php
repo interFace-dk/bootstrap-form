@@ -355,8 +355,8 @@ class BootstrapForm
         $items = '';
         foreach ($values as $row){
             $title = $this->getLabelTitle($row['name'], $name);
-            $inputElement = $this->form->checkbox($name, $row['value'], $row['checked'], $options);
-            $items.= '<label>'.$inputElement.$title.'</label>';
+            $inputElement = $this->form->checkbox($name.'['.$row['value'].']', $row['value'], $row['checked'], $options);
+            $items.= '<label class="control-label" for="'.$name.'['.$row['value'].']">'.$inputElement.$title.'</label>';
         }
 
         $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$items.'</div>';
