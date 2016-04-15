@@ -307,7 +307,7 @@ class BootstrapForm
             data-previewImageType="'.$imageOptions['previewImageType'].'"
         >
            <div class="fileinput fileinput-new">
-                <div class="fileinput-preview thumbnail uploaded" style="float:left;">'.$previewImage.'</div>
+                <div class="fileinput-preview thumbnail uploaded" style="float:left; max-height:'.$imageOptions['previewHeight'].'px; max-width:'.$imageOptions['previewWidth'].'px; ">'.$previewImage.'</div>
                 <div class="fileinput-preview thumbnail js-preview hide" style="float:left;"></div>
                 <div class="js-fileapi-wrapper" style="float:left; margin-left:10px;">
                     <div class="btn default btn-file js-browse">
