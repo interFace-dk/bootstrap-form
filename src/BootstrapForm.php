@@ -293,7 +293,7 @@ class BootstrapForm
 
         $previewImage = '<img src="http://placehold.it/'.$imageOptions['previewWidth'].'x'.$imageOptions['previewHeight'].'&text='.$imageOptions['minWidth'].'x'.$imageOptions['minHeight'].'" />';
         if ($value){
-            $previewImage = '<img src='.$value.' />';
+            $previewImage = '<img src='.$value.' width="'.$imageOptions['previewWidth'].'" height="'.$imageOptions['previewHeight'].'"/>';
         }
 
         $groupElement = '
