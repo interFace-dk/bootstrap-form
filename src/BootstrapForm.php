@@ -299,6 +299,7 @@ class BootstrapForm
         $groupElement = '
         <input type="text" name="'.$name.'" style="position: absolute; top: 0px; left: 0; height:1px; width: 1px; background: none; border: none;" />
         <div id="'.$name.'" class="cropImageModule"
+            data-tempUrl="'.$imageOptions['tempUrl'].'"
             data-uploadUrl="'.$imageOptions['uploadUrl'].'"
             data-minWidth="'.$imageOptions['minWidth'].'"
             data-minHeight="'.$imageOptions['minHeight'].'"
