@@ -547,26 +547,12 @@ class BootstrapForm
             if (is_array($row)){
                 $optionsArray[]=array(
                     'id'=>$row['id'],
-                    'text'=>str_replace([
-                        '&ququot;',
-                        '&quoquot;',
-                        '&quotquot;',
-                        '&quot;quot;'
-                    ],[
-                        '&quot;'
-                    ],html_entity_decode($row['name']))
+                    'text'=>$row['name']
                 );
             } else {
                 $optionsArray[]=array(
                     'id'=>$row->id,
-                    'text'=>str_replace([
-                        '&ququot;',
-                        '&quoquot;',
-                        '&quotquot;',
-                        '&quot;quot;'
-                    ],[
-                        '&quot;'
-                    ],html_entity_decode($row->name))
+                    'text'=>$row->name
                 );
             }
         }
