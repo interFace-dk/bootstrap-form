@@ -547,12 +547,12 @@ class BootstrapForm
             if (is_array($row)){
                 $optionsArray[]=array(
                     'id'=>$row['id'],
-                    'text'=>$row['name']
+                    'text'=>self::clearNameForSelect($row['name'])
                 );
             } else {
                 $optionsArray[]=array(
                     'id'=>$row->id,
-                    'text'=>$row->name
+                    'text'=>self::clearNameForSelect($row->name)
                 );
             }
         }
@@ -570,6 +570,16 @@ class BootstrapForm
         $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
 
         return $this->getFormGroup($name, $label, $groupElement, $options);
+    }
+    
+    private static function clearNameForSelect($str){
+        $str = str_replace('\"','',$str);
+        $str = str_replace('&quot;','',$str);
+        $str = str_replace('"','',$str);
+        $str = str_replace('\'','',$str);
+        $str = str_replace('&','',$str);
+        $str = str_replace(';','',$str);
+        return $str;
     }
 
     /**
