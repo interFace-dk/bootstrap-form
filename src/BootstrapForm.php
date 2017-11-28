@@ -430,7 +430,7 @@ class BootstrapForm
         }
         foreach ($optionsList as $row){
             if (is_array($row)){
-                $optionsArray[$row['id']]=$row['name'];
+                $optionsArray[$row['id']] = $row['name'];
             } else {
                 $optionsArray[$row->id]=$row->name;
             }
@@ -470,11 +470,13 @@ class BootstrapForm
         $wrapperOptions = ['class' => $this->getRightColumnClass()];
 
         $optionsArray = array();
-        foreach ($optionsList as $row){
+        foreach ($optionsList as $key => $row){
             if (is_string($row)) {
                 $optionsArray[$row] = $row;
+            } elseif (is_array($row)) {
+                $optionsArray[$key] = $row;
             } else {
-                $optionsArray[$row->id]=$row->name;
+                $optionsArray[$row->id] = $row->name;
             }
         }
 
