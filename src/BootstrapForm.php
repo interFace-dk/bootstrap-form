@@ -56,6 +56,18 @@ class BootstrapForm
         $this->session = $session;
     }
 
+    public function xEditableText($id, $title, $type = 'text', $value = null, array $opts = array()){
+        $placeholder = '';
+        if (array_key_exists('placeholder',$opts)){
+            $placeholder = $opts['placeholder'];
+        }
+        $placement = 'top';
+        if (array_key_exists('placement',$opts)){
+            $placement = $opts['placement'];
+        }
+        return '<a href="javascript:void(0);" id="'.$id.'" data-type="'.$type.'" data-placement="'.$placement.'" data-placeholder="'.$placeholder.'"  data-original-title="'.$title.'" data-emptytext="'.$title.'">'.$value.'</a>';
+    }
+
     /**
      * Open a form while passing a model and the routes for storing or updating
      * the model. This will set the correct route along with the correct
@@ -251,6 +263,25 @@ class BootstrapForm
     }
 
     /**
+     * Create a Bootstrap tags field input.
+     *
+     * @param  string  $name
+     * @param  string  $label
+     * @param  string  $value
+     * @param  array   $options
+     * @return string
+     */
+    public function tags($name, $label = null, $value = null, array $options = array())
+    {
+        if (array_key_exists('class',$options)){
+            $options['class'] = 'tags '.$options['class'];
+        } else {
+            $options['class'] = 'tags';
+        }
+        return $this->input('text', $name, $label, $value, $options);
+    }
+
+    /**
      * Create a Bootstrap span field.
      *
      * @param  string  $name
@@ -268,7 +299,7 @@ class BootstrapForm
             $value = 'Не указан';
         }
 
-        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'><span class="'.$options['class'].'">'.$value.'</span></div>';
+        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'><span name="'.$name.'" class="'.$options['class'].'">'.$value.'</span></div>';
 
         return $this->getFormGroup($name, $label, $groupElement,$incOptions);
     }
@@ -278,11 +309,14 @@ class BootstrapForm
 
         $previewImage = '<img src="http://placehold.it/'.$imageOptions['previewWidth'].'x'.$imageOptions['previewHeight'].'&text='.$imageOptions['minWidth'].'x'.$imageOptions['minHeight'].'" />';
         if ($value){
-            $previewImage = '<img src='.$value.' />';
+            $previewImage = '<img src='.$value.' width="'.$imageOptions['previewWidth'].'" height="'.$imageOptions['previewHeight'].'"/>';
         }
 
         $groupElement = '
+        <input type="text" name="'.$name.'" style="position: absolute; top: 0px; left: 0; height:1px; width: 1px; background: none; border: none;" />
         <div id="'.$name.'" class="cropImageModule"
+            data-modal="'.$imageOptions['modal'].'"
+            data-tempUrl="'.$imageOptions['tempUrl'].'"
             data-uploadUrl="'.$imageOptions['uploadUrl'].'"
             data-minWidth="'.$imageOptions['minWidth'].'"
             data-minHeight="'.$imageOptions['minHeight'].'"
@@ -290,9 +324,8 @@ class BootstrapForm
             data-previewHeight="'.$imageOptions['previewHeight'].'"
             data-previewImageType="'.$imageOptions['previewImageType'].'"
         >
-            <input type="text" name="'.$name.'" class="hide"/>
            <div class="fileinput fileinput-new">
-                <div class="fileinput-preview thumbnail uploaded" style="float:left;">'.$previewImage.'</div>
+                <div class="fileinput-preview thumbnail uploaded" style="float:left; max-height:'.$imageOptions['previewHeight'].'px; max-width:'.$imageOptions['previewWidth'].'px; ">'.$previewImage.'</div>
                 <div class="fileinput-preview thumbnail js-preview hide" style="float:left;"></div>
                 <div class="js-fileapi-wrapper" style="float:left; margin-left:10px;">
                     <div class="btn default btn-file js-browse">
@@ -306,6 +339,19 @@ class BootstrapForm
                 </div>
             </div>
         </div>';
+
+        return $this->getFormGroup($name, $label, $groupElement,$incOptions);
+    }
+
+    public function cropImageView($name, $label = null, $value=null, array $imageOptions = array(), array $incOptions = array()){
+        $label = $this->getLabelTitle($label, $name);
+
+        $previewImage = '<img src="http://placehold.it/'.$imageOptions['previewWidth'].'x'.$imageOptions['previewHeight'].'&text='.$imageOptions['minWidth'].'x'.$imageOptions['minHeight'].'" />';
+        if ($value){
+            $previewImage = '<img src='.$value.' />';
+        }
+
+        $groupElement = '<div class="fileinput-preview thumbnail" style="width:'.$imageOptions['previewWidth'].'px; height:'.$imageOptions['previewHeight'].'px">'.$previewImage.'</div>';
 
         return $this->getFormGroup($name, $label, $groupElement,$incOptions);
     }
@@ -327,8 +373,8 @@ class BootstrapForm
         $items = '';
         foreach ($values as $row){
             $title = $this->getLabelTitle($row['name'], $name);
-            $inputElement = $this->form->checkbox($name, $row['value'], $row['checked'], $options);
-            $items.= '<label>'.$inputElement.$title.'</label>';
+            $inputElement = $this->form->checkbox($name.'['.$row['value'].']', $row['value'], $row['checked'], $options);
+            $items.= '<label class="control-label" for="'.$name.'['.$row['value'].']">'.$inputElement.$title.'</label>';
         }
 
         $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$items.'</div>';
@@ -421,7 +467,14 @@ class BootstrapForm
         if (array_key_exists('data-placeholder',$options)){
             $optionsArray['']='';
         }
+
         $optionsArray = array_merge($optionsArray, $this->formatSelectOptions($optionsList));
+
+        $formGroupOptions['class'] = '';
+        if (strpos($options['class'],'hide')){
+            $options['class'] = trim(str_replace('hide','',$options['class']));
+            $formGroupOptions['class'] = 'hide';
+        }
 
         $inputElement = $this->form->select($name,$optionsArray,$value,$options);
 
@@ -432,7 +485,7 @@ class BootstrapForm
 
         $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
 
-        return $this->getFormGroup($name, $label, $groupElement);
+        return $this->getFormGroup($name, $label, $groupElement,$formGroupOptions);
     }
 
     /**
@@ -467,6 +520,67 @@ class BootstrapForm
         $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
 
         return $this->getFormGroup($name, $label, $groupElement);
+    }
+
+    /**
+     * Create a Bootstrap select2 field.
+     * @param $name
+     * @param $optionsList
+     * @param null $label
+     * @param int|array $value
+     * @param array $options
+     * @return string
+     */
+    public function select2json($name, $optionsList, $label = null, $value, array $options = array())
+    {
+        $label = $this->getLabelTitle($label, $name);
+
+        if (!array_key_exists('class',$options)){
+            $options['class']='';
+        }
+        $options['class'] .=' select2json';
+        $options = $this->getFieldOptions($options);
+
+        $wrapperOptions = ['class' => $this->getRightColumnClass()];
+
+        $optionsArray = array();
+        foreach ($optionsList as $row){
+            if (is_array($row)){
+                $optionsArray[]=array(
+                    'id'=>$row['id'],
+                    'text'=>self::clearNameForSelect($row['name'])
+                );
+            } else {
+                $optionsArray[]=array(
+                    'id'=>$row->id,
+                    'text'=>self::clearNameForSelect($row->name)
+                );
+            }
+        }
+
+        $itemOptions = $options;
+        $itemOptions['data-query'] = json_encode($optionsArray);
+        $itemOptions['class']=str_replace('hide','',$itemOptions['class']);
+        $inputElement = $this->form->input('hidden',$name,$value,$itemOptions);
+
+        $input = $inputElement;
+        if (array_key_exists('required',$options)){
+            $input = '<div class="input-icon right"><i class="fa"></i>'.$inputElement.'</div>';
+        }
+
+        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$input.$this->getFieldError($name).'</div>';
+
+        return $this->getFormGroup($name, $label, $groupElement, $options);
+    }
+
+    private static function clearNameForSelect($str){
+        $str = str_replace('\"','',$str);
+        $str = str_replace('&quot;','',$str);
+        $str = str_replace('"','',$str);
+        $str = str_replace('\'','',$str);
+        $str = str_replace('&','',$str);
+        $str = str_replace(';','',$str);
+        return $str;
     }
 
     /**
@@ -597,7 +711,7 @@ class BootstrapForm
             $elements .= $this->radio($name, $choiceLabel, $value, $checked, $inline, $options);
         }
 
-        return $this->getFormGroup($name, $label, $elements);
+        return $this->getFormGroup($name, $label, '<div class="radio-list">'.$elements.'</div>');
     }
 
     /**
@@ -686,8 +800,11 @@ class BootstrapForm
     public function input($type, $name, $label = null, $value = null, array $incOptions = array())
     {
         $label = $this->getLabelTitle($label, $name);
-
-        $options = $this->getFieldOptions($incOptions);
+        $formControlOptions = $incOptions;
+        if (array_key_exists('class',$formControlOptions)){
+            $formControlOptions['class']=str_replace('hide','',$formControlOptions['class']);
+        }
+        $options = $this->getFieldOptions($formControlOptions);
         $wrapperOptions = ['class' => $this->getRightColumnClass()];
 
         $inputElement = $type === 'password' ? $this->form->password($name, $options) : $this->form->{$type}($name, $value, $options);
@@ -872,6 +989,16 @@ class BootstrapForm
         return $this->getFieldError($field) ? $class : null;
     }
 
+    /**
+     * Handle the options for the select
+     * If its a "plain" value (string or int) value and text is the same
+     * If its a object it assues there is a id prop for value and name prop for text
+     *
+     * recursive if the value is a array, this makes the first level as optgroup
+     *
+     * @param  array  $options The options
+     * @return array           $options formated correctly
+     */
     private function formatSelectOptions($options)
     {
         $optionsArray = array();
