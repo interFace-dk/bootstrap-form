@@ -383,14 +383,7 @@ class BootstrapForm
         $options = $this->getFieldOptions($options);
         $wrapperOptions = ['class' => $this->getRightColumnClass()];
 
-        $optionsArray = array();
-        foreach ($optionsList as $row){
-            if (is_string($row)) {
-                $optionsArray[$row] = $row;
-            } else {
-                $optionsArray[$row->id]=$row->name;
-            }
-        }
+        $optionsArray = $this->formatSelectOptions($optionsList);
 
         $inputElement = $this->form->select($name,$optionsArray,$value,$options);
 
@@ -428,14 +421,7 @@ class BootstrapForm
         if (array_key_exists('data-placeholder',$options)){
             $optionsArray['']='';
         }
-        foreach ($optionsList as $row){
-            if (is_array($row)){
-                $optionsArray[$row['id']] = $row['name'];
-            } else {
-                $optionsArray[$row->id]=$row->name;
-            }
-        }
-
+        $optionsArray = array_merge($optionsArray, $this->formatSelectOptions($optionsList));
 
         $inputElement = $this->form->select($name,$optionsArray,$value,$options);
 
@@ -469,17 +455,7 @@ class BootstrapForm
         $options = $this->getFieldOptions($options);
         $wrapperOptions = ['class' => $this->getRightColumnClass()];
 
-        $optionsArray = array();
-        foreach ($optionsList as $key => $row){
-            if (is_string($row)) {
-                $optionsArray[$row] = $row;
-            } elseif (is_array($row)) {
-                $optionsArray[$key] = $row;
-            } else {
-                $optionsArray[$row->id] = $row->name;
-            }
-        }
-
+        $optionsArray = $this->formatSelectOptions($optionsList);
 
         $inputElement = $this->form->select($name,$optionsArray,$value,$options);
 
@@ -894,5 +870,21 @@ class BootstrapForm
     protected function getFieldErrorClass($field, $class = 'has-error')
     {
         return $this->getFieldError($field) ? $class : null;
+    }
+
+    private function formatSelectOptions($options)
+    {
+        $optionsArray = array();
+        foreach ($options as $key => $row){
+            if (is_string($row) || is_int($row)) {
+                $optionsArray[$row] = $row;
+            } elseif (is_array($row)) {
+                $optionsArray[$key] = $this->formatSelectOptions($row);
+            } else {
+                $optionsArray[$row->id]=$row->name;
+            }
+        }
+
+        return $optionsArray;
     }
 }
